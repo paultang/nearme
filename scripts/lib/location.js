@@ -44,12 +44,15 @@ exports.getUserId = getUserId;
 exports.addPartner = addPartner;
 exports.getPartners = getPartners;
 exports.clearCurrentSpace = clearCurrentSpace;
+exports.saveQuestions = saveQuestions;
+exports.getQuestionsPath = getQuestionsPath;
 const fs = __importStar(require("node:fs"));
 const path = __importStar(require("node:path"));
 const node_crypto_1 = __importDefault(require("node:crypto"));
 // Default state dir = skill root (scripts/../), overridable via env
 const STATE_DIR = process.env.NEARMEET_STATE_DIR || path.resolve(__dirname || '.', '..', '..');
 const STATE_FILE = path.join(STATE_DIR, 'state.json');
+const QUESTIONS_FILE = path.join(STATE_DIR, 'questions.md');
 function ensureDir() {
     if (!fs.existsSync(STATE_DIR)) {
         fs.mkdirSync(STATE_DIR, { recursive: true });
@@ -77,6 +80,7 @@ function setCurrentSpace(space, password) {
         password: password || space.password,
     };
     write(state);
+    saveQuestions(space.questions);
 }
 function getCurrentSpace() {
     return read().currentSpace;
@@ -110,6 +114,17 @@ function addPartner(name) {
 function getPartners() {
     return read().partners || [];
 }
+function saveQuestions(content) {
+    ensureDir();
+    if (content && content.trim()) {
+        fs.writeFileSync(QUESTIONS_FILE, content, 'utf-8');
+    } else {
+        try { fs.unlinkSync(QUESTIONS_FILE); } catch (_a) { }
+    }
+}
+function getQuestionsPath() {
+    return QUESTIONS_FILE;
+}
 function clearCurrentSpace() {
     const state = read();
     // Preserve userId and partners — only clear space info
@@ -117,4 +132,6 @@ function clearCurrentSpace() {
         userId: state.userId,
         partners: state.partners || [],
     });
+    // Clean up questions.md
+    try { fs.unlinkSync(QUESTIONS_FILE); } catch (_a) { }
 }

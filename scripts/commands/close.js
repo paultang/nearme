@@ -15,7 +15,8 @@ async function close() {
         return;
     }
     try {
-        await (0, api_js_1.closeSpace)(space.code, from, space.password);
+        const userId = (0, location_js_1.getUserId)();
+        await (0, api_js_1.closeSpace)(space.code, from, space.password, userId);
         (0, location_js_1.clearCurrentSpace)();
         console.log(`Space "${space.name}" closed.`);
     }

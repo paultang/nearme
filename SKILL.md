@@ -53,9 +53,22 @@ base-dir 见 "Base directory for this skill:"。state 存在 skill 根目录 `st
 
 ### 用户说"我要分享"：
 1. 读 base-dir 下 `state.json` 的 `lastProfileName` — 知道你是谁
-2. 认识你 → 问"要修改介绍吗？" → 创建/更新 `.md` 文件（存到 base-dir 下）
-3. 不认识 → 问几个问题 → 创建 `.md`（存到 base-dir 下）
+2. 认识你 → 问"要修改介绍吗？" → 走下方"引导提问"流程完善内容
+3. 不认识 → 进入下方"引导提问"流程
 4. 如果用户不知道写什么，展示 `template.md` 的内容作为参考
+
+### 引导提问流程（用问题库引导对话）：
+1. 检查 base-dir 下是否存在 `questions.md`
+2. 如果存在：
+   a. **读取 `questions.md`**，用其中的问题引导对话
+   b. **逐个提问**：每次问 1 个问题，根据回答自然追问（如"你提到做电商 SaaS，主要服务什么规模的客户？"）
+   c. **不要一次性抛所有问题**，模拟真人的对话节奏
+   d. 覆盖各维度：基本信息 → 业务定位 → 市场渠道 → 技术产品 → 资本资源 → 连接意向
+3. 如果不存在（回退）：
+   a. 用通用问题了解：行业、角色、提供什么、需要什么
+   b. 或展示 `template.md` 让用户参考
+
+4. 收集足够信息后，按下方 Profile 格式生成 `.md` 文件
 
 5. **名字查重：** 创建/更新前，先 `nearme list` 看看空间里有没有同名的人
    - 有重名 → 告知用户，建议改个不同的名字（如加后缀、用昵称）
@@ -64,7 +77,7 @@ base-dir 见 "Base directory for this skill:"。state 存在 skill 根目录 `st
 
 ### 用户说"看看谁在"或 list：
 1. `nearme list`
-2. 直接展示 CLI 的输出结果，**保留原有的 👑 🤝 📝 标记和编号**，不要重新排版
+2. 直接展示 CLI 的输出结果，**保留原有的（主持人）🤝 📝 标记和编号**，不要重新排版
 3. 用户选编号 → 用 `nearme view <编号>` 查看单人详情
 4. 支持用编号代替名字：`nearme view 3`、`nearme message 2 你好`、`nearme partner 4`
 
@@ -106,3 +119,7 @@ tags: [行业, 角色, 资源]
 - 密码空间用 `nearme here <code> --pass <密码>`
 - 内容自动审查
 - 空间 24h 无活动自动过期
+- `questions.md` 由空间创建者配置，加入空间时自动下载到本地
+- 使用 `questions.md` 中的问题引导对话，但根据回答自然追问——不要生硬照读
+- **每次用户查询（list / inbox / board / view 等），必须重新运行命令并展示结果。不要说"同上"、"跟上次一样"，直接执行并展示**
+- 空间创建者可以用 `nearme create <名称> --questions <file>` 设定问题库，或之后用 `nearme questions --set <file>` 更新

@@ -16,6 +16,7 @@ const board_js_1 = require("./commands/board.js");
 const network_js_1 = require("./commands/network.js");
 const partner_js_1 = require("./commands/partner.js");
 const view_js_1 = require("./commands/view.js");
+const questions_js_1 = require("./commands/questions.js");
 const [cmd, ...args] = process.argv.slice(2);
 // Parse --key value options from args
 function popFlag(key) {
@@ -51,7 +52,8 @@ switch (cmd) {
         const loc = popFlag('loc');
         const tags = popFlag('tags');
         const pass = popFlag('pass');
-        (0, create_js_1.create)(args.join(' ') || '', { code, location: loc, tags, pass });
+        const questions = popFlag('questions');
+        (0, create_js_1.create)(args.join(' ') || '', { code, location: loc, tags, pass, questions });
         break;
     }
     case 'message':
@@ -75,6 +77,11 @@ switch (cmd) {
     case 'view':
         (0, view_js_1.view)(args[0]);
         break;
+    case 'questions': {
+        const set = popFlag('set');
+        (0, questions_js_1.questions)(args.join(' '), { set });
+        break;
+    }
     case 'close':
         (0, close_js_1.close)();
         break;
