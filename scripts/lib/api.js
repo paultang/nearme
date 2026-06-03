@@ -17,6 +17,7 @@ exports.updateQuestions = updateQuestions;
 exports.postNotice = postNotice;
 exports.getNetwork = getNetwork;
 exports.getBoard = getBoard;
+exports.resolveProfile = resolveProfile;
 const BASE_URL = process.env.NEARMEET_API_URL || 'https://story-9ghdavb90e1aeb73-1375229540.ap-shanghai.app.tcloudbase.com/nearmeet';
 async function request(path, options) {
     const res = await fetch(`${BASE_URL}${path}`, {
@@ -105,4 +106,11 @@ function getNetwork(code, from, userId) {
 }
 function getBoard(code) {
     return request(`/api/spaces/${encodeURIComponent(code)}/board`);
+}
+function resolveProfile(input, profiles) {
+    const num = parseInt(input, 10);
+    if (!isNaN(num) && num >= 1 && num <= profiles.length) {
+        return profiles[num - 1];
+    }
+    return profiles.find(p => p.name === input) || null;
 }

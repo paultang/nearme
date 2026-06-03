@@ -15,9 +15,13 @@ async function message(to, content) {
         return;
     }
     if (!to || !content) {
-        console.log('Usage: nm message <name> <your message>');
+        console.log('Usage: nm message <name|number> <your message>');
         return;
     }
-    const msg = await (0, api_js_1.sendMessage)(space.code, { from, to, content }, space.password);
-    console.log(`Message sent to "${to}".`);
+    // Resolve number → name
+    const profiles = await (0, api_js_1.listProfiles)(space.code);
+    const resolved = (0, api_js_1.resolveProfile)(to, profiles.profiles || []);
+    if (!resolved) { console.log(`No one found: "${to}". Use nm list to see available people.`); return; }
+    const msg = await (0, api_js_1.sendMessage)(space.code, { from, to: resolved.name, content }, space.password);
+    console.log(`Message sent to "${resolved.name}".`);
 }

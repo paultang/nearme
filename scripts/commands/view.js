@@ -14,14 +14,16 @@ async function view(name) {
         console.log('Usage: nm view <name>');
         return;
     }
-    const [profile, index] = await Promise.all([
-        (0, api_js_1.getProfile)(space.code, name),
-        (0, api_js_1.listProfiles)(space.code),
+    const index = await (0, api_js_1.listProfiles)(space.code);
+    const resolved = (0, api_js_1.resolveProfile)(name, index.profiles || []);
+    if (!resolved) { console.log(`No one found: "${name}". Use nm list to see available people.`); return; }
+    const [profile] = await Promise.all([
+        (0, api_js_1.getProfile)(space.code, resolved.name),
     ]);
     // Save to local cache + update timestamps (so 📝 clears on next list)
     (0, cache_js_1.saveProfile)({ name: profile.name, content: profile.content, createdAt: '' });
     const existing = (0, cache_js_1.getCachedTimestamps)();
-    const entry = (index.profiles || []).find((p) => p.name === name);
+    const entry = (index.profiles || []).find((p) => p.name === resolved.name);
     if (entry) {
         existing[entry.name] = entry.updatedAt;
         (0, cache_js_1.saveTimestamps)(Object.entries(existing).map(([n, t]) => ({ name: n, updatedAt: t })));
