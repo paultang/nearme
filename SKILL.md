@@ -47,7 +47,8 @@ base-dir 见 "Base directory for this skill:"。state 存在 skill 根目录 `st
 | `network` | `nearme network` | 互动关系（仅创建者） |
 | `partner` | `nearme partner <名字\|编号>` | 添加伙伴（仅创建者） |
 | `close` | `nearme close` | 关闭空间（仅创建者） |
-| `create` | `nearme create <名称> [--pass]` | 创建空间 |
+| `create` | `nearme create <名称> [--pass] [--desc <描述>]` | 创建空间 |
+| `desc` | `nearme desc <描述>` | 更新活动描述（仅创建者） |
 
 ## 使用流程
 

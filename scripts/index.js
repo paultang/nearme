@@ -88,6 +88,22 @@ switch (cmd) {
         (0, questions_js_1.questions)(args.join(' '), { set });
         break;
     }
+    case 'desc': {
+        const api = require('./lib/api.js');
+        const loc = require('./lib/location.js');
+        const cur = loc.getCurrentSpace();
+        if (!cur) { console.log('No current space.'); break; }
+        if (!args.length) { console.log('Usage: nm desc <description>'); break; }
+        api.updateDescription(cur.code, args.join(' '), loc.getLastProfileName() || 'anonymous', cur.password, loc.getUserId()).then(() => {
+            // Update local state
+            const state = loc.getUserId() && require('fs').existsSync(require('path').join(__dirname, '..', 'state.json')) ? JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'state.json'), 'utf-8')) : {};
+            state.currentSpace = state.currentSpace || {};
+            state.currentSpace.description = args.join(' ');
+            require('fs').writeFileSync(require('path').join(__dirname, '..', 'state.json'), JSON.stringify(state, null, 2));
+            console.log(`Description updated.`);
+        }).catch(e => console.log(e.message));
+        break;
+    }
     case 'close':
         (0, close_js_1.close)();
         break;
