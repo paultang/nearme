@@ -77,6 +77,7 @@ function setCurrentSpace(space, password) {
         code: space.code,
         name: space.name,
         location: space.location,
+        description: space.description,
         password: password || space.password,
     };
     write(state);

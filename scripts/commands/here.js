@@ -17,6 +17,7 @@ async function here(input, options) {
         const current = (0, location_js_1.getCurrentSpace)();
         if (current) {
             console.log(`Current space: ${current.name} (${current.code})`);
+            if (current.description) console.log(`📋 ${current.description}`);
             if (current.location) console.log(`Location: ${current.location}`);
         } else {
             console.log('No current space. Use `nm here <code|description>` to set one.');
