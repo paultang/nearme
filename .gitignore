@@ -1,6 +1,6 @@
 state.json
 questions.md
-nearmeet-profiles/
+_timestamps.json
 profiles/
 *.md
 !SKILL.md

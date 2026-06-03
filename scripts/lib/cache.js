@@ -41,7 +41,7 @@ exports.saveTimestamps = saveTimestamps;
 exports.getCachedTimestamps = getCachedTimestamps;
 const fs = __importStar(require("node:fs"));
 const path = __importStar(require("node:path"));
-const CACHE_DIR = process.env.NEARMEET_CACHE_DIR || './nearmeet-profiles';
+const CACHE_DIR = process.env.NEARMEET_CACHE_DIR || '.';
 function ensureDir() {
     if (!fs.existsSync(CACHE_DIR)) {
         fs.mkdirSync(CACHE_DIR, { recursive: true });
