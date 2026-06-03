@@ -39,7 +39,7 @@ const api_js_1 = require("../lib/api.js");
 const location_js_1 = require("../lib/location.js");
 async function create(name, options) {
     if (!name) {
-        console.log('Usage: nm create "<name>" [--code <code>] [--loc <location>] [--tags <tags>] [--pass <password>] [--questions <file>]');
+        console.log('Usage: nm create "<name>" [--code <code>] [--loc <location>] [--tags <tags>] [--pass <password>] [--questions <file>] [--desc <description>]');
         return;
     }
     const tags = options.tags
@@ -64,12 +64,15 @@ async function create(name, options) {
         creator: (0, location_js_1.getLastProfileName)(),
         creatorId: (0, location_js_1.getUserId)(),
         questions,
+        description: options.desc,
     });
     (0, location_js_1.setCurrentSpace)(space);
     console.log(`Created space: ${space.name}`);
     console.log(`Short code: ${space.code}`);
     if (space.location)
         console.log(`Location: ${space.location}`);
+    if (space.description)
+        console.log(`Description: ${space.description}`);
     if (space.password)
         console.log(`Password: ${space.password} (share with participants)`);
     console.log(`\nShare this code with others: "${space.code}"`);

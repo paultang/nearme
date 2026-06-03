@@ -31,6 +31,7 @@ async function here(input, options) {
             (0, location_js_1.setCurrentSpace)(exact, password);
             saveQuestionsMd(exact);
             console.log(`Set current space to: ${exact.name} (${exact.code})`);
+            if (exact.description) console.log(`📋 ${exact.description}`);
             if (exact.requiresPassword && !password) {
                 console.log('Note: this space requires a password to share. Use --pass <password>');
             }
@@ -47,6 +48,7 @@ async function here(input, options) {
         (0, location_js_1.setCurrentSpace)(matches[0], password);
         saveQuestionsMd(matches[0]);
         console.log(`Set current space to: ${matches[0].name} (${matches[0].code})`);
+        if (matches[0].description) console.log(`📋 ${matches[0].description}`);
         if (matches[0].requiresPassword && !password) {
             console.log('Note: this space requires a password to share. Use --pass <password>');
         }

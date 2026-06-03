@@ -58,7 +58,8 @@ switch (cmd) {
         const loc = popFlag('loc');
         const tags = popFlag('tags');
         const pass = popFlag('pass');
-        (0, create_js_1.create)(args.join(' ') || '', { code, location: loc, tags, pass });
+        const desc = popFlag('desc');
+        (0, create_js_1.create)(args.join(' ') || '', { code, location: loc, tags, pass, desc });
         break;
     }
     case 'message':

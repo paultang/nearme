@@ -51,6 +51,11 @@ base-dir 见 "Base directory for this skill:"。state 存在 skill 根目录 `st
 
 ## 使用流程
 
+### 用户说"创建空间"：
+1. 问用户"这是什么活动？什么主题？" — 获取活动描述
+2. 根据描述生成空间名称，用 `nearme create "<name>" --desc "<描述>"` 创建
+3. 创建成功后告知 short code，方便分享给其他人
+
 ### 用户说"我要分享"：
 1. 读 base-dir 下 `state.json` 的 `lastProfileName` — 知道你是谁
 2. 认识你 → 问"要修改介绍吗？" → 走下方"引导提问"流程完善内容
