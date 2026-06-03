@@ -12,10 +12,10 @@ exports.downloadProfiles = downloadProfiles;
 exports.deleteProfile = deleteProfile;
 exports.sendMessage = sendMessage;
 exports.getInbox = getInbox;
+exports.updateQuestions = updateQuestions;
 exports.postNotice = postNotice;
 exports.getNetwork = getNetwork;
 exports.getBoard = getBoard;
-exports.updateQuestions = updateQuestions;
 const BASE_URL = process.env.NEARMEET_API_URL || 'https://story-9ghdavb90e1aeb73-1375229540.ap-shanghai.app.tcloudbase.com/nearmeet';
 async function request(path, options) {
     const res = await fetch(`${BASE_URL}${path}`, {
@@ -82,6 +82,12 @@ function sendMessage(code, msg, password) {
 function getInbox(code, name) {
     return request(`/api/spaces/${encodeURIComponent(code)}/messages/${encodeURIComponent(name)}`);
 }
+function updateQuestions(code, questions, from, password, userId) {
+    return request(`/api/spaces/${encodeURIComponent(code)}/questions`, {
+        method: 'POST',
+        body: JSON.stringify({ questions, from, password, byUserId: userId }),
+    });
+}
 function postNotice(code, from, content, password, userId) {
     return request(`/api/spaces/${encodeURIComponent(code)}/board`, {
         method: 'POST',
@@ -94,19 +100,3 @@ function getNetwork(code, from, userId) {
 function getBoard(code) {
     return request(`/api/spaces/${encodeURIComponent(code)}/board`);
 }
-function updateQuestions(code, questions, from, password, userId) {
-    return request(`/api/spaces/${encodeURIComponent(code)}/questions`, {
-        method: 'POST',
-        body: JSON.stringify({ questions, from, password, byUserId: userId }),
-    });
-}
-function resolveProfile(input, profiles) {
-    // Try number first: "3" → profile #3
-    const num = parseInt(input, 10);
-    if (!isNaN(num) && num >= 1 && num <= profiles.length) {
-        return profiles[num - 1];
-    }
-    // Fall back to name match
-    return profiles.find(p => p.name === input) || null;
-}
-exports.resolveProfile = resolveProfile;

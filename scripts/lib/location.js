@@ -113,24 +113,28 @@ function addPartner(name) {
 function getPartners() {
     return read().partners || [];
 }
+function clearCurrentSpace() {
+    const state = read();
+    // Preserve userId and partners — only clear space info
+    write({ userId: state.userId, partners: state.partners || [] });
+    // Clean up questions.md
+    try {
+        fs.unlinkSync(QUESTIONS_FILE);
+    }
+    catch { /* ok */ }
+}
 function saveQuestions(content) {
     ensureDir();
     if (content && content.trim()) {
         fs.writeFileSync(QUESTIONS_FILE, content, 'utf-8');
-    } else {
-        try { fs.unlinkSync(QUESTIONS_FILE); } catch (_a) { }
+    }
+    else {
+        try {
+            fs.unlinkSync(QUESTIONS_FILE);
+        }
+        catch { /* ok */ }
     }
 }
 function getQuestionsPath() {
     return QUESTIONS_FILE;
-}
-function clearCurrentSpace() {
-    const state = read();
-    // Preserve userId and partners — only clear space info
-    write({
-        userId: state.userId,
-        partners: state.partners || [],
-    });
-    // Clean up questions.md
-    try { fs.unlinkSync(QUESTIONS_FILE); } catch (_a) { }
 }

@@ -38,17 +38,6 @@ const fs = __importStar(require("node:fs"));
 const path = __importStar(require("node:path"));
 const api_js_1 = require("../lib/api.js");
 const location_js_1 = require("../lib/location.js");
-function parseFrontmatterName(content) {
-    const match = content.match(/^---\s*\n([\s\S]*?)\n---/);
-    if (!match)
-        return null;
-    for (const line of match[1].split('\n')) {
-        const kv = line.match(/^name:\s*(.+)/);
-        if (kv)
-            return kv[1].trim();
-    }
-    return null;
-}
 async function share(profilePath) {
     const space = (0, location_js_1.getCurrentSpace)();
     if (!space) {
@@ -65,8 +54,7 @@ async function share(profilePath) {
         return;
     }
     const content = fs.readFileSync(resolvedPath, 'utf-8');
-    // Parse name from YAML frontmatter; fall back to filename
-    const name = parseFrontmatterName(content) || path.basename(resolvedPath, '.md');
+    const name = path.basename(resolvedPath, '.md');
     console.log(`Uploading profile "${name}" to ${space.name}...`);
     const userId = (0, location_js_1.getUserId)();
     const result = await (0, api_js_1.uploadProfile)(space.code, name, content, space.password, userId);

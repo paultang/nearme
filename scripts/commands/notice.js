@@ -31,8 +31,7 @@ async function notice(content) {
         return;
     }
     try {
-        const userId = (0, location_js_1.getUserId)();
-        await (0, api_js_1.postNotice)(space.code, from, content, space.password, userId);
+        await (0, api_js_1.postNotice)(space.code, from, content, space.password, (0, location_js_1.getUserId)());
         console.log(`Notice posted. View with: nm notice`);
     }
     catch (err) {

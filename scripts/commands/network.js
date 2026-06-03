@@ -15,8 +15,7 @@ async function network() {
         return;
     }
     try {
-        const userId = (0, location_js_1.getUserId)();
-        const result = await (0, api_js_1.getNetwork)(space.code, from, userId);
+        const result = await (0, api_js_1.getNetwork)(space.code, from, (0, location_js_1.getUserId)());
         if (result.connections.length === 0) {
             console.log('No interactions yet.');
             return;
