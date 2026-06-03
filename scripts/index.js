@@ -17,6 +17,7 @@ const network_js_1 = require("./commands/network.js");
 const partner_js_1 = require("./commands/partner.js");
 const view_js_1 = require("./commands/view.js");
 const questions_js_1 = require("./commands/questions.js");
+const spaces_js_1 = require("./commands/spaces.js");
 const [cmd, ...args] = process.argv.slice(2);
 // Parse --key value options from args
 function popFlag(key) {
@@ -41,8 +42,13 @@ switch (cmd) {
     case 'list':
         (0, list_js_1.list)();
         break;
-    case 'download':
-        (0, download_js_1.download)();
+    case 'download': {
+        const space = popFlag('space');
+        (0, download_js_1.download)(args.join(' '), { space });
+        break;
+    }
+    case 'spaces':
+        (0, spaces_js_1.spaces)();
         break;
     case 'refresh':
         (0, refresh_js_1.refresh)();

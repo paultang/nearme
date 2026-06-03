@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.listSpaces = listSpaces;
+exports.listMySpaces = listMySpaces;
 exports.getSpace = getSpace;
 exports.createSpace = createSpace;
 exports.uploadProfile = uploadProfile;
@@ -35,6 +36,9 @@ function listSpaces(q) {
     const query = q ? `?q=${encodeURIComponent(q)}` : '';
     return request(`/api/spaces${query}`);
 }
+function listMySpaces(creatorId) {
+    return request(`/api/spaces/mine?creatorId=${encodeURIComponent(creatorId)}`);
+}
 function getSpace(code) {
     return request(`/api/spaces/${encodeURIComponent(code)}`);
 }
@@ -65,8 +69,10 @@ function addPartner(code, from, target, password, userId) {
 function getProfile(code, name) {
     return request(`/api/spaces/${encodeURIComponent(code)}/profiles/${encodeURIComponent(name)}`);
 }
-function downloadProfiles(code) {
-    return request(`/api/spaces/${encodeURIComponent(code)}/profiles/download`);
+function downloadProfiles(code, creatorId) {
+    let path = `/api/spaces/${encodeURIComponent(code)}/profiles/download`;
+    if (creatorId) path += `?creatorId=${encodeURIComponent(creatorId)}`;
+    return request(path);
 }
 function deleteProfile(code, name) {
     return request(`/api/spaces/${encodeURIComponent(code)}/profiles/${encodeURIComponent(name)}`, {
