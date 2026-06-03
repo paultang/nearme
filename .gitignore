@@ -1,3 +1,10 @@
 state.json
+questions.md
+nearmeet-profiles/
+profiles/
+*.md
+!SKILL.md
+!README.md
+!template.md
 .DS_Store
 node_modules
