@@ -111,5 +111,10 @@ function getPartners() {
     return read().partners || [];
 }
 function clearCurrentSpace() {
-    write({});
+    const state = read();
+    // Preserve userId and partners — only clear space info
+    write({
+        userId: state.userId,
+        partners: state.partners || [],
+    });
 }

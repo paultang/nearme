@@ -49,16 +49,16 @@ function uploadProfile(code, name, content, password, userId) {
 function listProfiles(code) {
     return request(`/api/spaces/${encodeURIComponent(code)}/profiles`);
 }
-function closeSpace(code, from, password) {
+function closeSpace(code, from, password, userId) {
     return request(`/api/spaces/${encodeURIComponent(code)}`, {
         method: 'DELETE',
-        body: JSON.stringify({ from }),
+        body: JSON.stringify({ from, byUserId: userId }),
     });
 }
-function addPartner(code, from, target, password) {
+function addPartner(code, from, target, password, userId) {
     return request(`/api/spaces/${encodeURIComponent(code)}/partner`, {
         method: 'POST',
-        body: JSON.stringify({ from, target, password }),
+        body: JSON.stringify({ from, target, password, byUserId: userId }),
     });
 }
 function getProfile(code, name) {
@@ -81,15 +81,25 @@ function sendMessage(code, msg, password) {
 function getInbox(code, name) {
     return request(`/api/spaces/${encodeURIComponent(code)}/messages/${encodeURIComponent(name)}`);
 }
-function postNotice(code, from, content, password) {
+function postNotice(code, from, content, password, userId) {
     return request(`/api/spaces/${encodeURIComponent(code)}/board`, {
         method: 'POST',
-        body: JSON.stringify({ from, content, password }),
+        body: JSON.stringify({ from, content, password, byUserId: userId }),
     });
 }
-function getNetwork(code, from) {
-    return request(`/api/spaces/${encodeURIComponent(code)}/network?from=${encodeURIComponent(from)}`);
+function getNetwork(code, from, userId) {
+    return request(`/api/spaces/${encodeURIComponent(code)}/network?from=${encodeURIComponent(from)}&byUserId=${encodeURIComponent(userId || '')}`);
 }
 function getBoard(code) {
     return request(`/api/spaces/${encodeURIComponent(code)}/board`);
 }
+function resolveProfile(input, profiles) {
+    // Try number first: "3" → profile #3
+    const num = parseInt(input, 10);
+    if (!isNaN(num) && num >= 1 && num <= profiles.length) {
+        return profiles[num - 1];
+    }
+    // Fall back to name match
+    return profiles.find(p => p.name === input) || null;
+}
+exports.resolveProfile = resolveProfile;

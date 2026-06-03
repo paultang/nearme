@@ -25,7 +25,7 @@ async function list() {
         const localTime = localTimestamps[p.name];
         const marker = localTime && localTime !== p.updatedAt ? ' 📝' : '';
         const role = p.name === creator ? ' 👑' : partners.includes(p.name) ? ' 🤝' : '';
-        console.log(`  ${i + 1}. ${p.name}${role}${marker}`);
+        console.log(`  ${p.num || i + 1}. ${p.name}${role}${marker}`);
     }
     console.log(`\nRun \`nm download\` to save their profiles locally.`);
 }

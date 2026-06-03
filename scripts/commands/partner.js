@@ -15,13 +15,18 @@ async function partner(target) {
         return;
     }
     if (!target) {
-        console.log('Usage: nm partner <name>');
+        console.log('Usage: nm partner <name|number>');
         return;
     }
     try {
-        await (0, api_js_1.addPartner)(space.code, from, target, space.password);
-        (0, location_js_1.addPartner)(target);
-        console.log(`"${target}" is now a partner.`);
+        const userId = (0, location_js_1.getUserId)();
+        // Resolve number → name
+        const profiles = await (0, api_js_1.listProfiles)(space.code);
+        const resolved = (0, api_js_1.resolveProfile)(target, profiles.profiles || []);
+        if (!resolved) { console.log(`No one found: "${target}". Use nm list to see available people.`); return; }
+        await (0, api_js_1.addPartner)(space.code, from, resolved.name, space.password, userId);
+        (0, location_js_1.addPartner)(resolved.name);
+        console.log(`"${resolved.name}" is now a partner.`);
     }
     catch (err) {
         console.log(err.message || 'Failed to add partner');

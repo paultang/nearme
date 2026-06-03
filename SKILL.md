@@ -39,12 +39,13 @@ base-dir 见 "Base directory for this skill:"。state 存在 skill 根目录 `st
 | `download` | `nearme download` | 下载所有 profiles 到本地 |
 | `unshare` | `nearme unshare` | 撤回自己的 profile |
 | `refresh` | `nearme refresh` | 检查新人 |
-| `message` | `nearme message <名字> <内容>` | 给某人留言 |
+| `view` | `nearme view <名字\|编号>` | 查看单人详情 |
+| `message` | `nearme message <名字\|编号> <内容>` | 给某人留言 |
 | `inbox` | `nearme inbox` | 查看留言 |
 | `notice` | `nearme notice [内容]` | 查看/发布公告 |
 | `board` | `nearme board` | 查看公告板 |
 | `network` | `nearme network` | 互动关系（仅创建者） |
-| `partner` | `nearme partner <名字>` | 添加伙伴（仅创建者） |
+| `partner` | `nearme partner <名字\|编号>` | 添加伙伴（仅创建者） |
 | `close` | `nearme close` | 关闭空间（仅创建者） |
 | `create` | `nearme create <名称> [--pass]` | 创建空间 |
 
@@ -56,12 +57,16 @@ base-dir 见 "Base directory for this skill:"。state 存在 skill 根目录 `st
 3. 不认识 → 问几个问题 → 创建 `.md`（存到 base-dir 下）
 4. 如果用户不知道写什么，展示 `template.md` 的内容作为参考
 
-5. 运行 `nearme share <base-dir>/你的文件名.md`
+5. **名字查重：** 创建/更新前，先 `nearme list` 看看空间里有没有同名的人
+   - 有重名 → 告知用户，建议改个不同的名字（如加后缀、用昵称）
+   - 确保每个人在空间中有唯一标识的名字
+6. 运行 `nearme share <base-dir>/你的文件名.md`
 
 ### 用户说"看看谁在"或 list：
 1. `nearme list`
-2. 直接展示 CLI 的输出结果，**保留原有的 👑 🤝 📝 标记**，不要重新排版
-3. 用户选编号 → 用 `nearme view <名字>` 查看单人详情（只下载一个人，不影响其他缓存）
+2. 直接展示 CLI 的输出结果，**保留原有的 👑 🤝 📝 标记和编号**，不要重新排版
+3. 用户选编号 → 用 `nearme view <编号>` 查看单人详情
+4. 支持用编号代替名字：`nearme view 3`、`nearme message 2 你好`、`nearme partner 4`
 
 ### 管理伙伴（仅创建者）：
 - `list` 后问"要把谁加为伙伴？输入编号"
@@ -74,6 +79,10 @@ base-dir 见 "Base directory for this skill:"。state 存在 skill 根目录 `st
 name: 名字
 tags: [行业, 角色, 资源]
 ---
+## 我在哪
+- **桌号：**
+- **排数：**
+
 ## 我是谁
 一句话介绍自己（行业 + 角色 + 核心优势）
 
