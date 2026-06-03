@@ -80,7 +80,6 @@ function setCurrentSpace(space, password) {
         password: password || space.password,
     };
     write(state);
-    saveQuestions(space.questions);
 }
 function getCurrentSpace() {
     return read().currentSpace;

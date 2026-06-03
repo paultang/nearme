@@ -12,13 +12,17 @@ async function questions(input, options) {
     const password = current.password;
     if (options.set) {
         try {
+            const path = require('node:path');
             const fs = require('node:fs');
             const content = fs.readFileSync(options.set, 'utf-8');
             const from = (0, location_js_1.getLastProfileName)() || 'anonymous';
             const userId = (0, location_js_1.getUserId)();
             await (0, api_js_1.updateQuestions)(current.code, content, from, password, userId);
-            (0, location_js_1.saveQuestions)(content);
+            // Save a copy to current directory for manual editing
+            const localPath = path.resolve(process.cwd(), 'questions.md');
+            fs.writeFileSync(localPath, content, 'utf-8');
             console.log(`Questions updated for space "${current.name}".`);
+            console.log(`Saved to ${localPath} — you can edit it and re-run with --set`);
         }
         catch (e) {
             console.log(`Error: ${e.message}`);
